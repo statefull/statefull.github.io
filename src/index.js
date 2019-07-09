@@ -24,12 +24,12 @@ ReactDOM.render(<App />, rootElement);
 async function configure() {
   // load the models
   const p = faceapi.loadTinyFaceDetectorModel(
-    "https://hpssjellis.github.io/face-api.js-for-beginners/"
+    "https://statefull.github.io/src/models/"
   );
   p.then(() => {
     console.log("!!! ok");
     const t = faceapi.loadFaceLandmarkTinyModel(
-      "https://hpssjellis.github.io/face-api.js-for-beginners/"
+      "https://statefull.github.io/src/models/"
     );
 
     t.then(() => {
