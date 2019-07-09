@@ -23,24 +23,31 @@ ReactDOM.render(<App />, rootElement);
 
 async function configure() {
   // load the models
-  const p = faceapi.loadTinyFaceDetectorModel(
+  const p = faceapi.nets.tinyFaceDetector.loadFromUri(
     "https://statefull.github.io/src/models/"
   );
   p.then(() => {
     console.log("!!! ok");
-    const t = faceapi.loadFaceLandmarkTinyModel(
+    const t = faceapi.nets.faceLandmark68TinyNet.loadFromUri(
       "https://statefull.github.io/src/models/"
     );
 
     t.then(() => {
-      console.log("!!! face ok");
-      const videoEl = document.getElementById("inputVideo");
 
-      navigator.getUserMedia(
-        { video: {} },
-        stream => (videoEl.srcObject = stream),
-        err => console.error(err)
-      );
+      const fr = faceapi.nets.faceRecognitionNet.loadFromUri("https://statefull.github.io/src/models/");
+
+      fr.then(() => {
+        console.log("!!! face ok");
+        const videoEl = document.getElementById("inputVideo");
+
+        navigator.getUserMedia(
+          { video: {} },
+          stream => (videoEl.srcObject = stream),
+          err => console.error(err)
+        );
+      }).catch(() => console.log('error!!!'));
+
+      
     }).catch(err => console.log("!!! face", err));
   }).catch(err => console.log("!!! dd", err));
 }
@@ -57,7 +64,8 @@ async function onPlay() {
 
     const result = await faceapi
       .detectSingleFace(video, options)
-      .withFaceLandmarks(true);
+      .withFaceLandmarks(true)
+      .withFaceDescriptor();
 
     if (!result) return;
     drawLandmarks(video, canvas, [result], true);
