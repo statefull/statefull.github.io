@@ -61,7 +61,7 @@ async function onPlay() {
 
     if (!result) return;
     drawLandmarks(video, canvas, [result], true);
-  }, 100);
+  }, 40);
 }
 
 function resizeCanvasAndResults(dimensions, canvas, results) {
